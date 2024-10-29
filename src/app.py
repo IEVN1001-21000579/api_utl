@@ -11,6 +11,23 @@ con=MySQL(app)
 def lista_alumnos():
     try:
         cursor=con.connection.cursor()
+        sql='SELECT * FROM alumnos where matricula={}'.format('matricula')
+        cursor.execute(sql)
+        datos=cursor.fetchone()
+        if datos!=None:
+            alumno={'matricula': datos[0], 'nombre': datos[1], 'apaterno': datos[2], 'amaterno': datos[3], 'correo': datos[4]}
+            return alumno
+        else:
+            return None
+    
+    except Exception as ex:
+        return jsonify({'message': 'error {}'.format(ex), 'exito': False})
+
+    return ''
+
+def leer_alumno_bd(matricula):
+    try:
+        cursor=con.connection.cursor()
         sql='SELECT * FROM alumnos'
         cursor.execute(sql)
         datos=cursor.fetchall()
@@ -22,8 +39,6 @@ def lista_alumnos():
     
     except Exception as ex:
         return jsonify({'message': 'error {}'.format(ex), 'exito': False})
-
-    return ''
 
 @app.route('/alumnos/<mat>', methods=['GET'])
 def lista_alumnos(mat):
