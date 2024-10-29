@@ -19,6 +19,21 @@ def lista_alumnos():
             alumno={'matricula': fila[0], 'nombre': fila[1], 'apaterno': fila[2], 'amaterno': fila[3], 'correo': fila[4]}
             alumnos.append(alumno)
         return jsonify({'alumnos': alumnos, 'mensaje': 'lista de alumnos', 'exito': True})
+    
+    except Exception as ex:
+        return jsonify({'message': 'error {}'.format(ex), 'exito': False})
+
+    return ''
+
+@app.route('/alumnos/<mat>', methods=['GET'])
+def lista_alumnos(mat):
+    try:
+        alumno=leer_alumno_bd(mat)
+        if alumno!=None:
+            return jsonify({'alumno': alumno, 'mensaje': 'alumno encontrado', 'exito': True}),
+        else:
+            return jsonify({'mensaje': 'alumno no encontrado', 'exito': False}),
+    
     except Exception as ex:
         return jsonify({'message': 'error {}'.format(ex), 'exito': False})
 
